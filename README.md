@@ -32,24 +32,24 @@
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
 │                        Frontend (index.html)                        │
-│                    Real-time Order Book · Charts                     │
+│                    Real-time Order Book · Charts                    │
 └──────────────────────────────┬──────────────────────────────────────┘
                                │ HTTP / JSON
 ┌──────────────────────────────▼──────────────────────────────────────┐
-│                     Python FastAPI (app.py)                          │
-│              Subprocess manager · REST routing · CORS                │
+│                     Python FastAPI (app.py)                         │
+│              Subprocess manager · REST routing · CORS               │
 └──────────────────────────────┬──────────────────────────────────────┘
                                │ stdin/stdout (line-delimited JSON)
-┌──────────────────────────────▼──────────────────────────────────────┐
-│                   C++ Engine (engine_cli.cpp)                        │
-│                 Command dispatcher · Session state                   │
+┌──────────────────────────────▼─────────────────────────────────────┐
+│                   C++ Engine (engine_cli.cpp)                      │
+│                 Command dispatcher · Session state                 │
 ├─────────────┬──────────────┬──────────────┬────────────────────────┤
 │  OrderBook  │  RiskManager │   Journal    │   Backtester           │
 │  (per-sym)  │  (per-sim)   │  (binary)    │   + Strategy plugins   │
 ├─────────────┴──────────────┴──────────────┴────────────────────────┤
-│                     ExchangeSimulator                               │
-│       Owns order books · Coordinates fills · Tracks latency         │
-└─────────────────────────────────────────────────────────────────────┘
+│                     ExchangeSimulator                              │
+│       Owns order books · Coordinates fills · Tracks latency        │
+└────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
@@ -279,15 +279,15 @@ Journals are the audit trail. A single bit-flip in a trade record could mean wro
 
 ```
                     ┌─────────────────────┐
-                    │   FastAPI (Python)    │
-                    │   Thread pool         │
+                    │   FastAPI (Python)  │
+                    │   Thread pool       │
                     └─────────┬───────────┘
                               │ threading.Lock
                               │ (serialized IPC)
                     ┌─────────▼───────────┐
-                    │   C++ Engine         │
-                    │   Single-threaded    │
-                    │   (deterministic)    │
+                    │   C++ Engine        │
+                    │   Single-threaded   │
+                    │   (deterministic)   │
                     └─────────────────────┘
 ```
 
